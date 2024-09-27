@@ -19,7 +19,7 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Allow CORS for the frontend domain
-const allowedOrigin = process.env.ORIGIN || 'https://mern-group-chat-frontend.vercel.app';
+const allowedOrigin = 'https://mern-group-chat-frontend.vercel.app';
 
 // Middleware 
 const corsOptions = {
@@ -51,5 +51,5 @@ mongoose.connect(databaseUrl).then(()=> console.log("Mongoose Connection: Succes
 });
 
 server.listen(port, ()=> {
-    console.log(`Server is running on http://localhost:${port} and ${allowedOrigin}`);
+    console.log(`Server is running on https://mern-group-chat-api.vercel.app/${port} and ${allowedOrigin}`);
 });
