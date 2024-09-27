@@ -28,11 +28,12 @@ const corsOptions = {
   credentials: true, // Enable cookies on browser
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use("/uploads/profiles", express.static("uploads/profiles")); 
 app.use("/uploads/files", cors(corsOptions), express.static("uploads/files")); // Apply CORS here as well
 
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -40,18 +41,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/contacts', contactRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/channel', channelRoutes);
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.sendStatus(200);
-});
 
 const port = process.env.PORT || 3001;
 const databaseUrl = process.env.DB_URL;
 
-mongoose.connect(databaseUrl).then(()=> console.log("Mongoose Connection: Successful")).catch(err=> console.log(err.message));
+mongoose.connect(databaseUrl).then(()=> console.log("Mongoose Connection: Successful")).catch(err=> {
+  console.log("Mongoose Connection Error:",err.message);
+  process.exit(1);
+});
 
 server.listen(port, ()=> {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port} and ${allowedOrigin}`);
 });
