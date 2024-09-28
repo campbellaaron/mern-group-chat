@@ -1,10 +1,14 @@
 require('dotenv').config(); // Add this line to load env variables
 const admin = require('firebase-admin');
-const serviceAccount = require('./thechatroom-8a53b-firebase-adminsdk-8eibg-b1b975d7dc.json'); // Ensure the correct path to the JSON file
+
 
 // Initialize Firebase app
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+        project_id: process.env.FIREBASE_PROJECT_ID,
+        private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET // Ensure this matches your Firebase bucket
 });
 
