@@ -4,7 +4,9 @@ const { verifyToken } = require("../middlewares/AuthMiddleware.js");
 const multer = require("multer");
 
 const messagesRoutes = express.Router();
-const upload = multer({dest:"uploads/files"});
+
+// Use multer's memory storage to store files in memory temporarily
+const upload = multer({ storage: multer.memoryStorage() })
 
 messagesRoutes.post("/get-messages", verifyToken, getMessages);
 messagesRoutes.post("/upload-file", verifyToken, upload.single("file"), uploadFile);
