@@ -21,7 +21,7 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Allow CORS for the frontend domain
-const allowedOrigin = process.env.ORIGIN || 'https://mern-group-chat-frontend.vercel.app';
+const allowedOrigin = /* process.env.ORIGIN || */ 'https://mern-group-chat-frontend.vercel.app';
 
 
 // Middleware 
@@ -44,7 +44,7 @@ app.use('/api/messages', messagesRoutes);
 app.use('/api/channel', channelRoutes);
 
 const port = process.env.PORT || 3001;
-const databaseUrl = process.env.DB_URL;
+const databaseUrl = process.env.MONGODB_URI;
 
 mongoose.connect(databaseUrl)
   .then(() => console.log("Mongoose Connection: Successful"))
