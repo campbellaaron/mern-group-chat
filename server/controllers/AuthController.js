@@ -2,6 +2,7 @@ const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { renameSync, unlinkSync } = require("fs");
+const { admin, bucket } = require('../firebaseConfig');  // Initialize Firebase once
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
@@ -164,27 +165,48 @@ const updateProfile = async (req, res, next) => {
 
 const addProfileImg = async (req, res, next) => {
     try {
-        if (!req.file) {
-            return res.status(400).send("File is required");
+      if (!req.file) {
+        return res.status(400).send("File is required");
+      }
+  
+      // Get current timestamp for unique filenames
+      const date = Date.now();
+      const fileName = `${date}-${req.file.originalname}`;
+  
+      // Upload file to Firebase Storage
+      const blob = bucket.file(`uploads/profiles/${fileName}`);
+      const blobStream = blob.createWriteStream({
+        metadata: {
+          contentType: req.file.mimetype
         }
-
-        const date = Date.now();
-        let fileName = "uploads/profiles/" + date + req.file.originalname;
-        renameSync(req.file.path, fileName);
-
+      });
+  
+      blobStream.on('error', (err) => {
+        return res.status(500).send({ message: err.message });
+      });
+  
+      blobStream.on('finish', async () => {
+        // The public URL of the file in Firebase Storage
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+  
+        // Update the user's profile with the new image URL
         const updatedUser = await User.findByIdAndUpdate(
-            { _id: req.userId }, 
-            { image: fileName }, 
-            { new: true, runValidators: true }
+          { _id: req.userId }, // Assume req.userId is set by the auth middleware
+          { image: publicUrl },
+          { new: true, runValidators: true }
         );
-        
+  
         return res.status(200).json({
-            image: updatedUser.image
+          image: updatedUser.image
         });
-    } catch(error) {
-        console.log("Something went wrong: ", error);
+      });
+  
+      blobStream.end(req.file.buffer); // Send the file buffer to Firebase Storage
+    } catch (error) {
+      console.log("Something went wrong: ", error);
+      return res.status(500).json({ message: "Server error" });
     }
-}
+  }
 
 const removeProfileImg = async (req, res, next) => {
     try {

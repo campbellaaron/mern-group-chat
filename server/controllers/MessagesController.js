@@ -1,5 +1,5 @@
 const Message = require("../models/MessagesModel");
-const {mkdirSync, renameSync } = require("fs");
+const { admin, bucket } = require('../firebaseConfig');  // Initialize Firebase once
 
 const getMessages = async (req, res, next) => {
     try {
@@ -7,15 +7,15 @@ const getMessages = async (req, res, next) => {
         const user2 = req.body.id;
 
         if (!user1 || !user2) {
-            return res.status(400).send("Both user Ids are required");
+            return res.status(400).send("Both user IDs are required");
         }
 
         const messages = await Message.find({
             $or: [
-                {sender: user1,recipient: user2},
+                {sender: user1, recipient: user2},
                 {sender: user2, recipient: user1},
             ],
-        }).sort({timestamp: 1});
+        }).sort({ timestamp: 1 });
 
         return res.status(200).json({ messages });
     } catch (error) {
@@ -26,19 +26,31 @@ const getMessages = async (req, res, next) => {
 
 const uploadFile = async (req, res, next) => {
     try {
-        
-        if(!req.file) {
+        if (!req.file) {
             return res.status(400).send("File is required");
         }
 
         const date = Date.now();
-        let fileDir = `uploads/files/${date}`;
-        let fileName = `${fileDir}/${req.file.originalname}`;
+        const fileName = `${date}-${req.file.originalname}`;
 
-        mkdirSync(fileDir,{recursive:true});
-        renameSync(req.file.path, fileName);
+        // Upload file to Firebase Storage
+        const blob = bucket.file(`uploads/files/${fileName}`);
+        const blobStream = blob.createWriteStream({
+            metadata: {
+                contentType: req.file.mimetype,
+            },
+        });
 
-        return res.status(200).json({ filePath: fileName });
+        blobStream.on('error', (err) => {
+            return res.status(500).send({ message: err.message });
+        });
+
+        blobStream.on('finish', async () => {
+            const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            return res.status(200).json({ fileUrl: publicUrl });
+        });
+
+        blobStream.end(req.file.buffer);
     } catch (error) {
         console.log("Something went wrong: ", error);
         return res.status(500).send("Internal server error");
@@ -46,5 +58,6 @@ const uploadFile = async (req, res, next) => {
 }
 
 module.exports = {
-    getMessages, uploadFile
+    getMessages,
+    uploadFile
 };

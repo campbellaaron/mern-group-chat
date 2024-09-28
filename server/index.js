@@ -8,7 +8,9 @@ const authRoutes = require("./routes/AuthRoutes");
 const contactRoutes = require("./routes/ContactRoutes");
 const messagesRoutes = require("./routes/MessagesRoutes");
 const channelRoutes = require("./routes/ChannelRoutes");
-const {setupSocket } = require("./socket");
+const { setupSocket } = require("./socket");
+const { admin } = require('./firebaseConfig');  // Initialize Firebase once
+
 
 dotenv.config();
 
@@ -19,20 +21,19 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Allow CORS for the frontend domain
-const allowedOrigin = 'https://mern-group-chat-frontend.vercel.app';
+const allowedOrigin = process.env.ORIGIN || 'https://mern-group-chat-frontend.vercel.app';
+
 
 // Middleware 
 const corsOptions = {
-  origin: allowedOrigin, // Replace with your front-end URL or use '*' to allow all origins
+  origin: allowedOrigin,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: true, // Enable cookies on browser
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-app.use("/uploads/profiles", express.static("uploads/profiles")); 
-app.use("/uploads/files", cors(corsOptions), express.static("uploads/files")); // Apply CORS here as well
 
 app.use(cookieParser());
 app.use(express.json());
@@ -45,11 +46,13 @@ app.use('/api/channel', channelRoutes);
 const port = process.env.PORT || 3001;
 const databaseUrl = process.env.DB_URL;
 
-mongoose.connect(databaseUrl).then(()=> console.log("Mongoose Connection: Successful")).catch(err=> {
-  console.log("Mongoose Connection Error:",err.message);
-  process.exit(1);
-});
+mongoose.connect(databaseUrl)
+  .then(() => console.log("Mongoose Connection: Successful"))
+  .catch(err => {
+    console.log("Mongoose Connection Error:", err.message);
+    process.exit(1);
+  });
 
-server.listen(port, ()=> {
-    console.log(`Server is running on https://mern-group-chat-api.vercel.app/${port} and ${allowedOrigin}`);
+server.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port} and ${allowedOrigin}`);
 });

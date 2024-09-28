@@ -3,7 +3,8 @@ const { signup, checkUser, login, getUserInfo, updateProfile, addProfileImg, rem
 const { verifyToken } = require("../middlewares/AuthMiddleware");
 const multer = require("multer");
 
-const upload = multer({dest:"uploads/profiles"});
+// Use multer's memory storage to store files in memory temporarily
+const upload = multer({ storage: multer.memoryStorage() })
 
 
 const authRoutes = express.Router();
