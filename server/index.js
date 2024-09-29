@@ -54,7 +54,7 @@ app.use('/api/contacts', contactRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/channel', channelRoutes);
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 300;
 const databaseUrl = process.env.MONGODB_URI;
 
 mongoose.connect(databaseUrl)
@@ -65,5 +65,5 @@ mongoose.connect(databaseUrl)
   });
 
 server.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port} and ${allowedOrigin}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
