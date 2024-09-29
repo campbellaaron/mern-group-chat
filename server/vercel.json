@@ -1,11 +1,17 @@
 {
   "version": 2,
   "builds": [
-    { "src": "index.js", "use": "@vercel/node" }
+    { "src": "*.js", "use": "@vercel/node" }
+  ],
+"routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "*.js"  // Adjust based on your server file path
+    }
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "https://mern-group-chat-frontend.vercel.app" },
