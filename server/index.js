@@ -33,7 +33,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.options('*', cors()); // Enable pre-flight across-the-board
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
 
 
 app.use(cookieParser());
