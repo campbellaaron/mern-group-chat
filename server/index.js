@@ -32,7 +32,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
-app.options('*', cors()); // Enable pre-flight across-the-board
 app.options('*', cors(corsOptions));
 
 
