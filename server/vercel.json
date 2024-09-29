@@ -5,14 +5,20 @@
       "src": "index.js",
       "use": "@vercel/node"
     },
-	  {
+    {
       "src": "dist/**",
       "use": "@vercel/static"
     }
   ],
-"rewrites": [
-    { "source": "/api/(.*)", "destination": "/index.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ],
   "headers": [
     {
@@ -22,7 +28,7 @@
         { "key": "Access-Control-Allow-Origin", "value": "https://mern-group-chat-frontend.vercel.app" },
         { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
         { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
-	 { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none';" }
       ]
     }
   ]
