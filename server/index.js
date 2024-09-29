@@ -21,7 +21,7 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Allow CORS for the frontend domain
-const allowedOrigin = process.env.ORIGIN || 'https://mern-group-chat-frontend.vercel.app';
+const allowedOrigin = 'https://mern-group-chat-frontend.vercel.app';
 
 
 // Middleware 
@@ -32,6 +32,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
+app.options('*', cors()); // Enable pre-flight across-the-board
 app.options('*', cors(corsOptions));
 
 
