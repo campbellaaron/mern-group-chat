@@ -42,11 +42,13 @@ const uploadFile = async (req, res, next) => {
         });
 
         blobStream.on('error', (err) => {
+            console.log("File Upload Issues: ", err);
             return res.status(500).send({ message: err.message });
         });
 
         blobStream.on('finish', async () => {
             const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            console.log({publicUrl});
             return res.status(200).json({ fileUrl: publicUrl });
         });
 

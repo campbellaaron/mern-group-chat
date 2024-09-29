@@ -29,7 +29,7 @@ const ContactList = ({ contacts, isChannel = false }) => {
                             !isChannel && 
                             <Avatar className="h-9 w-9 rounded-full overflow-hidden">
                                 {
-                                    contact.image ? <AvatarImage src={`${HOST}/${contact.image}`} alt="profile image" className="object-cover w-full h-full bg-black" /> : (
+                                    contact.image ? <AvatarImage src={`${contact.image}`} alt="profile image" className="object-cover w-full h-full bg-black" /> : (
                                     <div className={`${selectedChatData && selectedChatData._id === contact._id ? "bg-[#ffffff22] border border-white/50" : getColor(contact.color)} uppercase h-9 w-9 text-lg border-[1px] flex items-center justify-center rounded-full`}>
                                         {contact.firstName ? contact.firstName.charAt(0) : (contact.email?.charAt(0) || '')}
                                     </div>

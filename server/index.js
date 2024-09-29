@@ -21,7 +21,7 @@ const server = http.createServer(app);
 setupSocket(server);
 
 // Allow CORS for the frontend domain
-const allowedOrigin = /* process.env.ORIGIN || */ 'https://mern-group-chat-frontend.vercel.app';
+const allowedOrigin = process.env.ORIGIN || 'https://mern-group-chat-frontend.vercel.app';
 
 
 // Middleware 

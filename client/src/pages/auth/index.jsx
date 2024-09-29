@@ -50,7 +50,7 @@ const Auth = () => {
   const handleLogin = async ()=> {
     try {
         if (validateLogin()) {
-            const response = await apiClient.post('https://mern-group-chat-api.vercel.app/api/auth/login', {email, password}, {withCredentials: true});
+            const response = await apiClient.post(LOGIN_ROUTE, {email, password}, {withCredentials: true});
             console.log(response.data);
             if(response.data.user.id) {
                 setUserInfo(response.data.user);

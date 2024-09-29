@@ -86,6 +86,7 @@ const MessageBar = () => {
 
 
                 if (response.status === 200 && response.data) {
+                    console.log("File works! ", file);
                     setIsUploading(false);
                     if (selectedChatType === "contact") {
                         socket.emit("sendMessage",{

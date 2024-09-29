@@ -1,5 +1,5 @@
 import { useAppStore } from "@/store"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { FaPlus, FaTrash } from "react-icons/fa"
@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import { ADD_PROFILE_IMG_ROUTE, HOST, REMOVE_PROFILE_IMG_ROUTE, UPDATE_PROFILE_ROUTE } from "@/utils/constants";
-import { useRef } from "react";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const Profile = () => {
       setLastName(userInfo.lastName || '');
       setSelectedColor(userInfo.color || 0);
       if (userInfo.image) {
-        setImage(`${HOST}/${userInfo.image}`); // Load user image if available
+        setImage(`${userInfo.image}`); // Load user image if available
       }
     }
   }, [userInfo]);
@@ -61,9 +60,6 @@ const Profile = () => {
           setUserInfo({ ...response.data });
           toast.success("Profile updated successfully!");
           navigate("/chat"); // Use `replace` to avoid stack issues
-          // if (userInfo && userInfo.profileSetup) {
-          //    // Wait for state to update before navigating
-          // }
         }
       } catch (error) {
         console.log(error);
@@ -120,7 +116,7 @@ const Profile = () => {
         setImage(null);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Something broke? ",error);
       toast.error("Something went wrong");
     }
   };

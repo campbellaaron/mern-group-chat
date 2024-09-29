@@ -1,6 +1,7 @@
 const { Server } = require('socket.io');
 const Message = require("./models/MessagesModel");
 const Channel = require("./models/ChannelModel");
+require('dotenv').config();
 
 const setupSocket = (server) => {
     const io = new Server(server, {
@@ -34,6 +35,8 @@ const setupSocket = (server) => {
             fileUrl,
         });
 
+        console.log({createdMessage});
+
         const messageData = await Message.findById(createdMessage._id).populate("sender", "id email firstName lastName image color").exec();
 
         if (!messageData) {
@@ -64,10 +67,19 @@ const setupSocket = (server) => {
     }
 
     const sendMessage = async (message) => {
+        const {sender, content, messageType, fileUrl} = message;
         const senderSocketId = userSocketMap.get(message.sender);
         const recipientSocketId = userSocketMap.get(message.recipient);
 
-        const createdMessage = await Message.create(message);
+        const createdMessage = await Message.create({
+            sender, 
+            recipient: null,
+            content, 
+            messageType,
+            timestamp: new Date(),
+            fileUrl,
+        });
+        console.log({createdMessage});
 
         const messageData = await Message.findById(createdMessage._id).populate("sender","id email firstName lastName image color").populate("recipient","id email firstName lastName image color");
 
