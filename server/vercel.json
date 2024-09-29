@@ -1,7 +1,7 @@
 {
-  "version":2,
+  "version": 2,
   "builds": [
-    {"src": "*.js","use": "@vercel/node"}
+    { "src": "*.js", "use": "@vercel/node" }
   ],
   "headers": [
     {
@@ -11,7 +11,10 @@
         { "key": "Access-Control-Allow-Origin", "value": "https://mern-group-chat-frontend.vercel.app" },
         { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
         { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' https://mern-group-chat-api.vercel.app/favicon.ico" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' https://mern-group-chat-api.vercel.app data:; object-src 'none';"
+        }
       ]
     }
   ]
