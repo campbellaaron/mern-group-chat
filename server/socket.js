@@ -8,7 +8,7 @@ const setupSocket = (server) => {
         cors: {
           origin: process.env.ORIGIN,
           methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-          allowedHeaders: ["X-CSRF-Token", "X-Requested-With", "Accept", "Accept-Version", "Content-Length", "Content-MD5", "Content-Type", "Date", "X-Api-Version"],
+          allowedHeaders: ["X-CSRF-Token", "X-Requested-With", "Accept", "Accept-Version", "Content-Length", "Content-MD5", "Content-Type", "Authorization", "Date", "X-Api-Version"],
           credentials: true, // Enable cookies on browser
         },
     });
