@@ -5,14 +5,11 @@
       "src": "index.js",
       "use": "@vercel/node"
     },
-    {
-      "src": "dist/**",
-      "use": "@vercel/static"
-    }
+    { "src": "package.json", "use": "@vercel/static-build", "config": {"distDir": "dist"} },
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/index.js" },
-    { "source": "/(.*)", "destination": "/chat" }
+    { "source": "/(.*)", "destination": "/dist/index.html" }
   ],
   "headers": [
     {
