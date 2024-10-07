@@ -45,11 +45,6 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-app.use((req, res, next) => {
-    console.log(`Received request: ${req.method} ${req.path}`);
-    res.setHeader("Access-Control-Allow-Origin", allowedOrigin); // Explicitly set the header
-    next();
-});
 
 app.use(cookieParser());
 app.use(express.json());

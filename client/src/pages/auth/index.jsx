@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import Background from "@/assets/crewchat_login.png";
-import Victory from "@/assets/victory.svg";
+import PollyPirate from "@/assets/pollypirate.svg";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -103,7 +103,7 @@ const Auth = () => {
             <div className="flex items-center justify-center flex-col">
                 <div className="flex items-center justify-center">
                     <h1 className="text-5xl font-bold md:text-6xl">Welcome</h1>
-                    <img src={Victory} alt="victory emoji" className="h-[100px]"/>
+                    <img src={PollyPirate} alt="victory emoji" className="h-[70px] px-3"/>
                 </div>
                 <p className="font-medium text-center">FIll in your details to get started with Crew Chat!</p>
             </div>

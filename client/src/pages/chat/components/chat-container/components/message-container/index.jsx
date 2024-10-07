@@ -167,8 +167,8 @@ const MessageContainer = () => {
                         ? "bg-[#8417ff]/5 text-[#8417ff]/90 border-[#8417ff]/50"
                         : "bg-[#2a2b33]/5 text-white/80 border-[#fff]/20"
                         } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}>
-                        {checkIfImage(message.fileUrl) ? <div className="cursor-pointer" onClick={() => openModal(`${HOST}/${message.fileUrl}`)}>
-                            <img src={`${HOST}/${message.fileUrl}`} height={300} width={300} alt="" />
+                        {checkIfImage(message.fileUrl) ? <div className="cursor-pointer" onClick={() => openModal(`${message.fileUrl}`)}>
+                            <img src={`${message.fileUrl}`} height={300} width={300} alt="" />
                         </div> : <div className="flex items-center justify-center gap-5">
                             <span className="text-white/80 text-3xl bg-black/20 rounded-full p-3">
                                 <MdFolderZip />
@@ -198,7 +198,7 @@ const MessageContainer = () => {
                 {message.sender._id !== userInfo.id ? (
                     <div className="flex items-center justify-start gap-3">
                         <Avatar className="h-8 w-8 rounded-full overflow-hidden">
-                        {message.sender.image && <AvatarImage src={`${HOST}/${message.sender.image}`} alt="profile image" className="object-cover w-full h-full bg-black" />}
+                        {message.sender.image && <AvatarImage src={`${message.sender.image}`} alt="profile image" className="object-cover w-full h-full bg-black" />}
                             <AvatarFallback className={`uppercase h-8 w-8 text-lg flex items-center justify-center rounded-full ${getColor(message.sender.color)}`}>
                                 {message.sender.firstName ? message.sender.firstName.charAt(0) : (message.sender.email?.charAt(0) || '')}
                             </AvatarFallback>
@@ -224,8 +224,8 @@ const MessageContainer = () => {
                         : "bg-[#2a2b33]/5 text-white/80 border-[#fff]/20"
                         } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}>
                         {checkIfImage(message.fileUrl) ? (
-                            <div className="cursor-pointer" onClick={() => openModal(`${HOST}/${message.fileUrl}`)}>
-                                <img src={`${HOST}/${message.fileUrl}`} height={300} width={300} alt="" />
+                            <div className="cursor-pointer" onClick={() => openModal(`${message.fileUrl}`)}>
+                                <img src={`${message.fileUrl}`} height={300} width={300} alt="" />
                             </div>
                         ) : (
                             <div className="flex items-center justify-center gap-5">

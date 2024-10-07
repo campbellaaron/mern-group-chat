@@ -9,43 +9,50 @@ export const useSocket = () => {
     return useContext(SocketContext);
 }
 
-export const SocketProvider = ({children}) => {
+export const SocketProvider = ({ children }) => {
     const socket = useRef();
-    const {userInfo } = useAppStore();
+    const { userInfo } = useAppStore();
 
     useEffect(() => {
-      if(userInfo) {
-        socket.current = io(HOST, {withCredentials:true, query:{userId: userInfo.id},});
-        socket.current.on("connect",()=> {
-            console.log("Connected to socket server");
-        });
+        if (userInfo) {
+            socket.current = io(HOST, { withCredentials: true, query: { userId: userInfo.id }, });
+            socket.current.on("connect", () => {
+                console.log("Connected to socket server");
+            });
 
-        const handleReceiveMessage = (message) => {
-            const {selectedChatData, selectedChatType, addMessage, addContactsInDmList } = useAppStore.getState();
+            const handleReceiveMessage = (message) => {
+                const { selectedChatData, selectedChatType, addMessage, addContactsInDmList } = useAppStore.getState();
+                
+                if (!message.recipient) {
+                    console.error("Recipient is missing in the message object", message);
+                    return; // or handle the error appropriately
+                }
 
-            if (selectedChatType !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)) {
-                addMessage(message);   
+                if (selectedChatType !== undefined && selectedChatData &&
+                    (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)) {
+                    console.log("Message: ", message);
+                    addMessage(message);
+                }
+                addContactsInDmList(message);
             }
-            addContactsInDmList(message);
-        }
 
-        const handleReceiveChannelMessage = (message) => {
-            const {selectedChatData, selectedChatType, addMessage, addChannelInList} = useAppStore.getState();
-            console.log("Client received channel message: ", message);
+            const handleReceiveChannelMessage = (message) => {
+                const { selectedChatData, selectedChatType, addMessage, addChannelInList } = useAppStore.getState();
+                console.log("Client received channel message: ", message);
 
-            if (selectedChatType !== undefined && selectedChatData._id === message.channelId) {
-                addMessage(message);
+                if (selectedChatType !== undefined && selectedChatData._id === message.channelId) {
+                    addMessage(message);
+                }
+                addChannelInList(message);
             }
-            addChannelInList(message);
-        }
 
-        socket.current.on("receiveMessage",handleReceiveMessage);
-        socket.current.on("receive-channel-message",handleReceiveChannelMessage);
+            socket.current.on("receiveMessage", handleReceiveMessage);
+            socket.current.on("receive-channel-message", handleReceiveChannelMessage);
 
-        return ()=> {
-            socket.current.disconnect();
+            return () => {
+                socket.current.disconnect();
+            }
         }
-      }
     }, [userInfo]);
 
     return (
@@ -53,5 +60,5 @@ export const SocketProvider = ({children}) => {
             {children}
         </SocketContext.Provider>
     )
-    
+
 }
