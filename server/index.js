@@ -11,7 +11,6 @@ const channelRoutes = require("./routes/ChannelRoutes");
 const { setupSocket } = require("./socket");
 const { admin } = require('./firebaseConfig');  // Initialize Firebase once
 
-
 dotenv.config();
 
 const express = require("express");
@@ -22,7 +21,6 @@ setupSocket(server);
 
 // Allow CORS for the frontend domain
 const allowedOrigin = process.env.ORIGIN;
-
 
 // Middleware 
 const corsOptions = {

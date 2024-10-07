@@ -11,6 +11,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/socket.io/(.*)", "destination": "/socket.js" },
     { "source": "/api/(.*)", "destination": "/index.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
