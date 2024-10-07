@@ -117,7 +117,7 @@ const MessageContainer = () => {
 
     const checkIfImage = (filePath) => {
         const imageRegex = /\.(jpg|jpeg|png|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
-        return imageRegex.test(filePath);
+        return imageRegex.test(filePath.split('?')[0]);  // Ignore query parameters
     };
 
 

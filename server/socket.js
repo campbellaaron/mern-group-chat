@@ -33,7 +33,7 @@ const setupSocket = (server) => {
             content, 
             messageType,
             timestamp: new Date(),
-            fileUrl,
+            fileUrl: messageType === "file" ? fileUrl : null,
         });
 
         console.log({createdMessage});
@@ -74,11 +74,11 @@ const setupSocket = (server) => {
 
         const createdMessage = await Message.create({
             sender, 
-            recipient: null,
+            recipient: message.recipient,
             content, 
             messageType,
             timestamp: new Date(),
-            fileUrl,
+            fileUrl: messageType === "file" ? message.fileUrl : null,
         });
         console.log({createdMessage});
 
@@ -90,6 +90,7 @@ const setupSocket = (server) => {
         if(senderSocketId) {
             io.to(senderSocketId).emit("receiveMessage", messageData);
         }
+        console.log
     }
 
     io.on("connection", (socket)=> {

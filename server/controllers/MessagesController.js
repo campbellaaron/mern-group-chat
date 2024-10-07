@@ -47,7 +47,7 @@ const uploadFile = async (req, res, next) => {
         });
 
         blobStream.on('finish', async () => {
-            const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+            const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(blob.name)}?alt=media`;
             console.log({publicUrl});
             return res.status(200).json({ fileUrl: publicUrl });
         });

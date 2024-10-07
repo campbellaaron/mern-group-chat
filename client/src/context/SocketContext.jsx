@@ -30,7 +30,6 @@ export const SocketProvider = ({ children }) => {
 
                 if (selectedChatType !== undefined && selectedChatData &&
                     (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)) {
-                    console.log("Message: ", message);
                     addMessage(message);
                 }
                 addContactsInDmList(message);
@@ -38,7 +37,6 @@ export const SocketProvider = ({ children }) => {
 
             const handleReceiveChannelMessage = (message) => {
                 const { selectedChatData, selectedChatType, addMessage, addChannelInList } = useAppStore.getState();
-                console.log("Client received channel message: ", message);
 
                 if (selectedChatType !== undefined && selectedChatData._id === message.channelId) {
                     addMessage(message);
